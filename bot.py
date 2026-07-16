@@ -209,110 +209,77 @@ class AdminButtons(discord.ui.View):
 
 
 
-@discord.ui.button(
-    label="✅ Одобрить",
-    style=discord.ButtonStyle.success
-)
-async def approve(
-    self,
-    interaction: discord.Interaction,
-    button: discord.ui.Button
-):
+    @discord.ui.button(
+        label="✅ Одобрить",
+        style=discord.ButtonStyle.success
+    )
+    async def approve(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
 
-    if not self.has_access(interaction):
+        if not self.has_access(interaction):
+            return await interaction.response.send_message(
+                "❌ Нет доступа.",
+                ephemeral=True
+            )
 
-        return await interaction.response.send_message(
-            "❌ Нет доступа.",
+        embed = interaction.message.embeds[0]
+
+        embed.add_field(
+            name="✅ Решение",
+            value=f"Одобрил: {interaction.user.mention}",
+            inline=False
+        )
+
+        embed.color = discord.Color.green()
+
+        await interaction.message.edit(
+            embed=embed,
+            view=self
+        )
+
+        await interaction.response.send_message(
+            "✅ Заявка одобрена.",
             ephemeral=True
         )
 
-    embed = discord.Embed.from_dict(
-        interaction.message.embeds[0].to_dict()
+    @discord.ui.button(
+        label="❌ Отклонить",
+        style=discord.ButtonStyle.danger
     )
+    async def reject(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
 
-    embed.color = discord.Color.green()
-
-    embed.clear_fields()
-
-    old_embed = interaction.message.embeds[0]
-
-    for field in old_embed.fields:
-        if "Решение" not in field.name:
-            embed.add_field(
-                name=field.name,
-                value=field.value,
-                inline=field.inline
+        if not self.has_access(interaction):
+            return await interaction.response.send_message(
+                "❌ Нет доступа.",
+                ephemeral=True
             )
 
-    embed.add_field(
-        name="✅ Решение",
-        value=f"Одобрил: {interaction.user.mention}",
-        inline=False
-    )
+        embed = interaction.message.embeds[0]
 
-    await interaction.message.edit(
-        embed=embed,
-        view=self
-    )
-
-    await interaction.response.send_message(
-        "✅ Заявка одобрена.",
-        ephemeral=True
-    )
-
-
-@discord.ui.button(
-    label="❌ Отклонить",
-    style=discord.ButtonStyle.danger
-)
-async def reject(
-    self,
-    interaction: discord.Interaction,
-    button: discord.ui.Button
-):
-
-    if not self.has_access(interaction):
-
-        return await interaction.response.send_message(
-            "❌ Нет доступа.",
-            ephemeral=True
+        embed.add_field(
+            name="❌ Решение",
+            value=f"Отклонил: {interaction.user.mention}",
+            inline=False
         )
 
-    embed = discord.Embed.from_dict(
-        interaction.message.embeds[0].to_dict()
-    )
+        embed.color = discord.Color.red()
 
-    embed.color = discord.Color.red()
+        await interaction.message.edit(
+            embed=embed,
+            view=self
+        )
 
-    embed.clear_fields()
-
-    old_embed = interaction.message.embeds[0]
-
-    for field in old_embed.fields:
-        if "Решение" not in field.name:
-            embed.add_field(
-                name=field.name,
-                value=field.value,
-                inline=field.inline
-            )
-
-    embed.add_field(
-        name="❌ Решение",
-        value=f"Отклонил: {interaction.user.mention}",
-        inline=False
-    )
-
-    await interaction.message.edit(
-        embed=embed,
-        view=self
-    )
-
-    await interaction.response.send_message(
-        "❌ Заявка отклонена.",
-        ephemeral=True
-    )
-
-
+        await interaction.response.send_message(
+            "❌ Заявка отклонена.",
+            ephemeral=True
+        )
 
     @discord.ui.button(
         label="📋 Создать запрос",
