@@ -49,7 +49,7 @@ class AdminRequestModal(discord.ui.Modal, title="👑 Запрос админи�
 
     profile = discord.ui.TextInput(
         label="🔗 Ссылка на профиль",
-        placeholder="Ссылка на профиль игрока",
+        placeholder="Ссылка на профиль игрока (сайт)",
         max_length=300
     )
 
@@ -68,11 +68,6 @@ class AdminRequestModal(discord.ui.Modal, title="👑 Запрос админи�
     )
 
 
-    screenshot = discord.ui.TextInput(
-        label="📸 Скрин с сайта (профиль)",
-        placeholder="Скрин залить на yapx.ru (или другой сайт для скринов) и отправить ссылку",
-        max_length=300
-    )
 
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -129,11 +124,6 @@ class AdminRequestModal(discord.ui.Modal, title="👑 Запрос админи�
         )
 
 
-        embed.add_field(
-            name="📸 Скрин",
-            value=self.screenshot.value,
-            inline=False
-        )
 
 
         embed.set_thumbnail(
@@ -351,8 +341,6 @@ async def панель(ctx):
             "• Профиль\n"
             "• Ранг\n"
             "• Период\n"
-            "• Скрин с сайта(профиль)\n\n"
-            "📸 Скрин загружать через yapx.ru(или другой сайт для скринов)"
         ),
         color=discord.Color.gold()
     )
