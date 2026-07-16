@@ -225,20 +225,34 @@ class AdminButtons(discord.ui.View):
                 ephemeral=True
             )
 
-        embed = interaction.message.embeds[0]
+embed = discord.Embed.from_dict(
+    interaction.message.embeds[0].to_dict()
+)
 
+old_fields = list(embed.fields)
+
+embed.clear_fields()
+
+for field in old_fields:
+    if "Решение" not in field.name:
         embed.add_field(
-            name="✅ Решение",
-            value=f"Одобрил: {interaction.user.mention}",
-            inline=False
+            name=field.name,
+            value=field.value,
+            inline=field.inline
         )
 
-        embed.color = discord.Color.green()
+embed.add_field(
+    name="✅ Решение",
+    value=f"Одобрил: {interaction.user.mention}",
+    inline=False
+)
 
-        await interaction.message.edit(
-            embed=embed,
-            view=self
-        )
+embed.color = discord.Color.green()
+
+await interaction.message.edit(
+    embed=embed,
+    view=self
+)
 
         await interaction.response.send_message(
             "✅ Заявка одобрена.",
@@ -261,21 +275,34 @@ class AdminButtons(discord.ui.View):
                 ephemeral=True
             )
 
-        embed = interaction.message.embeds[0]
+embed = discord.Embed.from_dict(
+    interaction.message.embeds[0].to_dict()
+)
 
+old_fields = list(embed.fields)
+
+embed.clear_fields()
+
+for field in old_fields:
+    if "Решение" not in field.name:
         embed.add_field(
-            name="❌ Решение",
-            value=f"Отклонил: {interaction.user.mention}",
-            inline=False
+            name=field.name,
+            value=field.value,
+            inline=field.inline
         )
 
-        embed.color = discord.Color.red()
+embed.add_field(
+    name="❌ Решение",
+    value=f"Отклонил: {interaction.user.mention}",
+    inline=False
+)
 
-        await interaction.message.edit(
-            embed=embed,
-            view=self
-        )
+embed.color = discord.Color.red()
 
+await interaction.message.edit(
+    embed=embed,
+    view=self
+)
         await interaction.response.send_message(
             "❌ Заявка отклонена.",
             ephemeral=True
