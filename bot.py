@@ -209,104 +209,105 @@ class AdminButtons(discord.ui.View):
 
 
 
-    @discord.ui.button(
-        label="✅ Одобрить",
-        style=discord.ButtonStyle.success
-    )
-    async def approve(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
-    ):
-
-        if not self.has_access(interaction):
-            return await interaction.response.send_message(
-                "❌ Нет доступа.",
-                ephemeral=True
-            )
-
-embed = discord.Embed.from_dict(
-    interaction.message.embeds[0].to_dict()
+@discord.ui.button(
+    label="✅ Одобрить",
+    style=discord.ButtonStyle.success
 )
+async def approve(
+    self,
+    interaction: discord.Interaction,
+    button: discord.ui.Button
+):
 
-old_fields = list(embed.fields)
-
-embed.clear_fields()
-
-for field in old_fields:
-    if "Решение" not in field.name:
-        embed.add_field(
-            name=field.name,
-            value=field.value,
-            inline=field.inline
-        )
-
-embed.add_field(
-    name="✅ Решение",
-    value=f"Одобрил: {interaction.user.mention}",
-    inline=False
-)
-
-embed.color = discord.Color.green()
-
-await interaction.message.edit(
-    embed=embed,
-    view=self
-)
-
-        await interaction.response.send_message(
-            "✅ Заявка одобрена.",
+    if not self.has_access(interaction):
+        return await interaction.response.send_message(
+            "❌ Нет доступа.",
             ephemeral=True
         )
 
-    @discord.ui.button(
-        label="❌ Отклонить",
-        style=discord.ButtonStyle.danger
+    embed = discord.Embed.from_dict(
+        interaction.message.embeds[0].to_dict()
     )
-    async def reject(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
-    ):
 
-        if not self.has_access(interaction):
-            return await interaction.response.send_message(
-                "❌ Нет доступа.",
-                ephemeral=True
+    old_fields = list(embed.fields)
+
+    embed.clear_fields()
+
+    for field in old_fields:
+        if "Решение" not in field.name:
+            embed.add_field(
+                name=field.name,
+                value=field.value,
+                inline=field.inline
             )
 
-embed = discord.Embed.from_dict(
-    interaction.message.embeds[0].to_dict()
+    embed.add_field(
+        name="✅ Решение",
+        value=f"Одобрил: {interaction.user.mention}",
+        inline=False
+    )
+
+    embed.color = discord.Color.green()
+
+    await interaction.message.edit(
+        embed=embed,
+        view=self
+    )
+
+    await interaction.response.send_message(
+        "✅ Заявка одобрена.",
+        ephemeral=True
+    )
+
+@discord.ui.button(
+    label="❌ Отклонить",
+    style=discord.ButtonStyle.danger
 )
+async def reject(
+    self,
+    interaction: discord.Interaction,
+    button: discord.ui.Button
+):
 
-old_fields = list(embed.fields)
-
-embed.clear_fields()
-
-for field in old_fields:
-    if "Решение" not in field.name:
-        embed.add_field(
-            name=field.name,
-            value=field.value,
-            inline=field.inline
-        )
-
-embed.add_field(
-    name="❌ Решение",
-    value=f"Отклонил: {interaction.user.mention}",
-    inline=False
-)
-
-embed.color = discord.Color.red()
-
-await interaction.message.edit(
-    embed=embed,
-    view=self
-)
-        await interaction.response.send_message(
-            "❌ Заявка отклонена.",
+    if not self.has_access(interaction):
+        return await interaction.response.send_message(
+            "❌ Нет доступа.",
             ephemeral=True
         )
+
+    embed = discord.Embed.from_dict(
+        interaction.message.embeds[0].to_dict()
+    )
+
+    old_fields = list(embed.fields)
+
+    embed.clear_fields()
+
+    for field in old_fields:
+        if "Решение" not in field.name:
+            embed.add_field(
+                name=field.name,
+                value=field.value,
+                inline=field.inline
+            )
+
+    embed.add_field(
+        name="❌ Решение",
+        value=f"Отклонил: {interaction.user.mention}",
+        inline=False
+    )
+
+    embed.color = discord.Color.red()
+
+    await interaction.message.edit(
+        embed=embed,
+        view=self
+    )
+
+    await interaction.response.send_message(
+        "❌ Заявка отклонена.",
+        ephemeral=True
+    )
 
     @discord.ui.button(
         label="📋 Создать запрос",
